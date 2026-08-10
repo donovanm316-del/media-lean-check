@@ -21,6 +21,7 @@ interface AnalysisResponse {
   rightWeight: number;
   matched: MatchedTerm[];
   outlet: { domain: string; lean: string } | null;
+  explanation: string[];
   title: string | null;
   truncated: boolean;
 }
@@ -159,6 +160,17 @@ function Results({ result }: { result: AnalysisResponse }) {
           <span>Republican-leaning framing</span>
         </div>
       </div>
+
+      {result.explanation.length > 0 && (
+        <div>
+          <div className="mb-2 text-sm font-medium text-zinc-700 dark:text-zinc-300">Why</div>
+          <div className="flex flex-col gap-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+            {result.explanation.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </div>
+        </div>
+      )}
 
       {result.outlet && (
         <div className="rounded-lg bg-zinc-50 px-4 py-2 text-sm dark:bg-zinc-900">
