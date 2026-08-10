@@ -1,4 +1,4 @@
-import { JSDOM } from "jsdom";
+import { parseHTML } from "linkedom";
 import { Readability } from "@mozilla/readability";
 
 export interface ExtractedArticle {
@@ -43,8 +43,8 @@ export async function extractFromUrl(url: string): Promise<ExtractedArticle> {
     clearTimeout(timeout);
   }
 
-  const dom = new JSDOM(html, { url: parsed.toString() });
-  const reader = new Readability(dom.window.document);
+  const { document } = parseHTML(html);
+  const reader = new Readability(document as unknown as Document);
   const article = reader.parse();
 
   if (!article || !article.textContent || article.textContent.trim().length < 200) {
